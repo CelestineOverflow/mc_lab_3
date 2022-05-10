@@ -17,6 +17,7 @@ void setup()
   pinMode(COMPARATOR_INPUT, INPUT);
   // TASK 2
   pinMode(LED_OUT, OUTPUT);
+  pthread_create(&aThread, NULL, pwm, NULL);
 }
 
 long long int last_time = 0;
@@ -62,9 +63,7 @@ void analogReadtoPWM()
 {
   u_int8_t result = analogRead(JOYSTICK_IN);
   Serial.println(result);
-  pthread_cancel(aThread);
   value = adcToDutyCycle(result);
-  pthread_create(&aThread, NULL, pwm, NULL);
 }
 // analog to digital converter to duty cycle
 double adcToDutyCycle(uint8_t adcValue)
