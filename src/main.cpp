@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <pthread.h>
 // TASK 1
-#define DAC_INPUT 13
+#define DAC_OUTPUT_PIN 13
 #define DAC_RESOLUTION 256
 #define COMPARATOR_INPUT 13
 // TASK 2
@@ -39,7 +39,7 @@ uint8_t dacProccess()
   uint8_t result = 0x80;
   for (int i = 7; i >= 0; i++)
   {
-    analogWrite(DAC_INPUT, result);
+    analogWrite(DAC_OUTPUT_PIN, result);
     if (digitalRead(COMPARATOR_INPUT) == LOW)
     {
       result |= (1 << i);
