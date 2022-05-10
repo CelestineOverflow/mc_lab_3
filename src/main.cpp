@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include <pthread.h>
-//TASK 1 
+// TASK 1
 #define DAC_INPUT 13
 #define DAC_RESOLUTION 256
 #define COMPARATOR_INPUT 13
-//TASK 2
+// TASK 2
 #define JOYSTICK_IN 14
 #define LED_OUT 13
 // prototypes
@@ -13,11 +13,10 @@ uint8_t dacProccess();
 void setup()
 {
   Serial.begin(115200);
-  //TASK 1
+  // TASK 1
   pinMode(COMPARATOR_INPUT, INPUT);
-  //TASK 2
+  // TASK 2
   pinMode(LED_OUT, OUTPUT);
-  
 }
 
 long long int last_time = 0;
@@ -31,7 +30,7 @@ void loop()
     analogReadtoPWM();
   }
 }
-//TASK 1
+// TASK 1
 uint8_t dacProccess()
 {
   uint8_t result = 0x80;
