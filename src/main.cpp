@@ -66,8 +66,7 @@ void analogReadtoPWM()
 // analog to digital converter to duty cycle
 double adcToDutyCycle(uint8_t adcValue)
 {
-  double dutyCycle = (double)adcValue / (double)DAC_RESOLUTION;
-  return dutyCycle;
+  return (double)adcValue / (double)DAC_RESOLUTION;
 }
 
 // pwm function frequency = 1000 Hz
