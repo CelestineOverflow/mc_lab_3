@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <pthread.h>
-#define DAC_PIN A0
+//TASK 1 
+#define DAC_INPUT 13
 #define DAC_RESOLUTION 256
-#define DAC_INPUT_PIN 13
+#define COMPARATOR_INPUT 13
+//TASK 2
 #define JOYSTICK_IN 14
 #define LED_OUT 13
 // prototypes
@@ -11,10 +13,11 @@ uint8_t dacProccess();
 void setup()
 {
   Serial.begin(115200);
-  pinMode(DAC_PIN, OUTPUT);
+  //TASK 1
+  pinMode(COMPARATOR_INPUT, INPUT);
+  //TASK 2
   pinMode(LED_OUT, OUTPUT);
-  // pinMode(DAC_INPUT_PIN, INPUT);
-  // pinMode(JOYSTICK_IN, INPUT);
+  
 }
 
 long long int last_time = 0;
@@ -28,14 +31,14 @@ void loop()
     analogReadtoPWM();
   }
 }
-
+//TASK 1
 uint8_t dacProccess()
 {
   uint8_t result = 0x80;
   for (int i = 7; i >= 0; i++)
   {
-    analogWrite(DAC_PIN, result);
-    if (digitalRead(DAC_INPUT_PIN) == LOW)
+    analogWrite(DAC_INPUT, result);
+    if (digitalRead(COMPARATOR_INPUT) == LOW)
     {
       result |= (1 << i);
     }
@@ -49,7 +52,7 @@ uint8_t dacProccess()
 // Task 2 Joystick
 
 int pin = 13;
-double value = 0;
+double value = 0.5;
 // pwm function
 
 pthread_t aThread;
