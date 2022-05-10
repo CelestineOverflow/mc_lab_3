@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <pthread.h>
+
+#define DEBUG 1
 // TASK 1
 #define DAC_OUTPUT_PIN 13
 #define DAC_RESOLUTION 256
@@ -9,6 +11,9 @@
 #define LED_OUT 13
 // prototypes
 uint8_t dacProccess();
+double adcToDutyCycle(uint8_t adcValue);
+void analogReadtoPWM();
+void *pwm(void *arg);
 // global variables
 pthread_t aThread;
 
@@ -42,7 +47,9 @@ uint8_t dacProccess()
   for (int i = 7; i >= 0; i++)
   {
     analogWrite(DAC_OUTPUT_PIN, result);
-    if (digitalRead(COMPARATOR_INPUT) == LOW)
+    result = digitalRead(COMPARATOR_INPUT) == LOW;
+    DEBUG ? true : testArray[i] = result;
+    if (result)
     {
       result |= (1 << i);
     }
