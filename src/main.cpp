@@ -33,6 +33,8 @@ void loop()
     analogReadtoPWM();
   }
 }
+// test array
+bool testArray[8] = {false, false, false, false, false, false, false, false};
 // TASK 1
 uint8_t dacProccess()
 {
@@ -61,6 +63,7 @@ void analogReadtoPWM()
 {
   u_int8_t result = analogRead(JOYSTICK_IN);
   Serial.println(result);
+  //THIS MAY BE WRONG 
   value = adcToDutyCycle(result);
 }
 // analog to digital converter to duty cycle
