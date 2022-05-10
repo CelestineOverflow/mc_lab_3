@@ -11,9 +11,9 @@
 #define LED_OUT 13
 // prototypes
 uint8_t dacProccess();
+void* pwmProccess(void*);
+String analogReadtoPWM();
 double adcToDutyCycle(uint8_t adcValue);
-void analogReadtoPWM();
-void *pwm(void *arg);
 // global variables
 pthread_t aThread;
 
@@ -24,7 +24,7 @@ void setup()
   pinMode(COMPARATOR_INPUT, INPUT);
   // TASK 2
   pinMode(LED_OUT, OUTPUT);
-  pthread_create(&aThread, NULL, pwm, NULL);
+  pthread_create(&aThread, NULL, pwmProccess, NULL);
 }
 
 long long int last_time = 0;
@@ -48,7 +48,7 @@ uint8_t dacProccess()
   {
     analogWrite(DAC_OUTPUT_PIN, result);
     result = digitalRead(COMPARATOR_INPUT) == LOW;
-    DEBUG ? true : testArray[i] = result;
+    DEBUG ? true : 0;
     if (result)
     {
       result |= (1 << i);
@@ -66,12 +66,12 @@ double value = 0.5;
 
 // read joystick input and output to PWM
 
-void analogReadtoPWM()
+String analogReadtoPWM()
 {
   u_int8_t result = analogRead(JOYSTICK_IN);
-  Serial.println(result);
   //THIS MAY BE WRONG 
   value = adcToDutyCycle(result);
+  return String(value);
 }
 // analog to digital converter to duty cycle
 double adcToDutyCycle(uint8_t adcValue)
@@ -79,10 +79,9 @@ double adcToDutyCycle(uint8_t adcValue)
   return (double)adcValue / (double)DAC_RESOLUTION;
 }
 
-// pwm function frequency = 1000 Hz
 
-#define PWM_PERIOD 1000 // 1ms
-void *pwm(void *arg)
+#define PWM_PERIOD 1000 // 1ms Frequency = 1000 Hz
+void *pwmProccess(void *arg)// pwm function 
 {
   int high = PWM_PERIOD - (int)(value * PWM_PERIOD);
   int low = PWM_PERIOD - high;
