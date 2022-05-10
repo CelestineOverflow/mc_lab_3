@@ -11,9 +11,10 @@
 #define LED_OUT 13
 // prototypes
 uint8_t dacProccess();
-void* pwmProccess(void*);
+void *pwmProccess(void *);
 String analogReadtoPWM();
 double adcToDutyCycle(uint8_t adcValue);
+void setupPWM();
 // global variables
 pthread_t aThread;
 
@@ -24,7 +25,7 @@ void setup()
   pinMode(COMPARATOR_INPUT, INPUT);
   // TASK 2
   pinMode(LED_OUT, OUTPUT);
-  pthread_create(&aThread, NULL, pwmProccess, NULL);
+  setupPWM();
 }
 
 long long int last_time = 0;
@@ -69,7 +70,7 @@ double value = 0.5;
 String analogReadtoPWM()
 {
   u_int8_t result = analogRead(JOYSTICK_IN);
-  //THIS MAY BE WRONG 
+  // THIS MAY BE WRONG WORKING WITH THREADS IS A MESS
   value = adcToDutyCycle(result);
   return String(value);
 }
@@ -79,9 +80,12 @@ double adcToDutyCycle(uint8_t adcValue)
   return (double)adcValue / (double)DAC_RESOLUTION;
 }
 
+void setupPWM(){
+  pthread_create(&aThread, NULL, pwmProccess, NULL);
+}
 
-#define PWM_PERIOD 1000 // 1ms Frequency = 1000 Hz
-void *pwmProccess(void *arg)// pwm function 
+#define PWM_PERIOD 1000      // 1ms Frequency = 1000 Hz
+void *pwmProccess(void *arg) // pwm function
 {
   int high = PWM_PERIOD - (int)(value * PWM_PERIOD);
   int low = PWM_PERIOD - high;
