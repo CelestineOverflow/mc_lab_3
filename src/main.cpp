@@ -9,6 +9,8 @@
 #define LED_OUT 13
 // prototypes
 uint8_t dacProccess();
+// global variables
+pthread_t aThread;
 
 void setup()
 {
@@ -51,11 +53,7 @@ uint8_t dacProccess()
 }
 // Task 2 Joystick
 
-int pin = 13;
 double value = 0.5;
-// pwm function
-
-pthread_t aThread;
 
 // read joystick input and output to PWM
 
@@ -84,11 +82,11 @@ void *pwm(void *arg)
   {
     if (micros() - start_time > high)
     {
-      digitalWrite(pin, LOW);
+      digitalWrite(LED_OUT, LOW);
     }
     else
     {
-      digitalWrite(pin, HIGH);
+      digitalWrite(LED_OUT, HIGH);
     }
     if (micros() - start_time > PWM_PERIOD)
     {
