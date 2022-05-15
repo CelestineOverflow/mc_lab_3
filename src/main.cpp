@@ -147,7 +147,7 @@ void *pwmProccess(void *arg) // pwm function
 
 typedef enum {section_0, section_1} section_t;
 
-void proccess(uint8_t dac_input){
+void proccess(uint8_t dac_input){//you stupid piece of shit this could have used just another timer
   String kk = convertshit(dac_input);
   Serial.println(kk);
   int digit0 = kk.charAt(0) - '0';
